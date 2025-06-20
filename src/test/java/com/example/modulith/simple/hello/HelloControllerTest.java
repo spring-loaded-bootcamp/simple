@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -26,6 +27,9 @@ class HelloControllerTest {
 
     private MockMvc mockMvc;
 
+    @Value("${hello.text}")
+    private String helloText;
+
     @Autowired
     private WebApplicationContext context;
 
@@ -41,7 +45,7 @@ class HelloControllerTest {
         this.mockMvc.perform(get("/hello"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello World")))
+                .andExpect(content().string(containsString(helloText)))
                 .andDo(document("hello"));
     }
 }
